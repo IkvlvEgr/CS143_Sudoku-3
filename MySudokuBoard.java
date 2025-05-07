@@ -152,27 +152,29 @@ public class MySudokuBoard {
       return isValid() && !isSolved();
    }
    
-   public boolean solve() {
-      //System.out.println(toString());
-      if(isSolved()) {
-         return true;
-      } else if(!isValid()) {
-         return false;
-      }
-      
-      for(int c = 0; c < board[0].length; c++) {
-         for(int r = 0; r < board.length; r++) {
-            if(board[r][c] == 0) {
-               for(int num = 1; num <= 9; num++) {
-                  board[r][c] = num;
-                  if(solve())
-                     return true;
-               }
+public boolean solve() {
+    if (isSolved()) {
+        return true;
+    }
+
+    for (int r = 0; r < board.length; r++) {
+        for (int c = 0; c < board[0].length; c++) {
+            if (board[r][c] == 0) {
+                for (int num = 1; num <= 9; num++) {
+                    board[r][c] = num;
+                    if (isValid() && solve()) {
+                        return true;
+                    }
+                    board[r][c] = 0;
+                }
+                return false;
             }
-         }
-      }
-      return false;
-   }
+        }
+    }
+
+    return false;
+}
+
    
    public String toString () {
       String result = "";
