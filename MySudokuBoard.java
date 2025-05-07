@@ -143,6 +143,34 @@ public class MySudokuBoard {
       return isValid() && isFull();
    }
    
+   private boolean isPuzzleCanBeSolved() {
+      return isValid() && !isSolved();
+   }
+   
+   public boolean solve() {
+      //System.out.println(toString());
+      if(isSolved()) {
+         return true;
+      } else if(!isValid()) {
+         return false;
+      }
+      
+      for(int c = 0; c < board[0].length; c++) {
+         for(int r = 0; r < board.length; r++) {
+            if(board[r][c] == 0) {
+               for(int num = 1; num <= 9; num++) {
+                  board[r][c] = num;
+                  String attempt = makeLexiographically(length, word);
+                  if(!attempt.equals(""))
+                     return attempt;
+                  word = word.substring(0, word.length() - 1);
+               }
+            }
+         }
+      }
+      return false;
+   }
+   
    public String toString () {
       String result = "";
       for (int r = 0;r < 9; r++) {
