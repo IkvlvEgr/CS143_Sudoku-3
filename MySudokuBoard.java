@@ -6,25 +6,30 @@ import java.util.*;
 public class MySudokuBoard { 
    private int [][] board;
    
-   public MySudokuBoard (String fileName) throws FileNotFoundException {
+   public MySudokuBoard (String fileName) { // throws FileNotFoundException {
       board = new int [9][9];
-      File f = new File(fileName);
-      Scanner s = new Scanner (f);
-      
-      for (int r = 0; r < 9; r++) {
-         if (s.hasNextLine()) {
-            String line = s.nextLine();
-            for (int c = 0; c < 9; c++){
-               char num = line.charAt(c);
-               
-               if(num == '.') {
-                  board[r][c] = 0;
-               } else {
-                  board[r][c] = num - '0';
+      System.out.println(fileName);
+      try {
+         File f = new File(fileName);
+         Scanner s = new Scanner (f);
+         
+         for (int r = 0; r < 9; r++) {
+            if (s.hasNextLine()) {
+               String line = s.nextLine();
+               for (int c = 0; c < 9; c++){
+                  char num = line.charAt(c);
+                  
+                  if(num == '.') {
+                     board[r][c] = 0;
+                  } else {
+                     board[r][c] = num - '0';
+                  }
                }
             }
+            
          }
-         
+      } catch(FileNotFoundException e) {
+         System.out.println("No such file is found");
       }
    }
    
@@ -160,10 +165,8 @@ public class MySudokuBoard {
             if(board[r][c] == 0) {
                for(int num = 1; num <= 9; num++) {
                   board[r][c] = num;
-                  String attempt = makeLexiographically(length, word);
-                  if(!attempt.equals(""))
-                     return attempt;
-                  word = word.substring(0, word.length() - 1);
+                  if(solve())
+                     return true;
                }
             }
          }
